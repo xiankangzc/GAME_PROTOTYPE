@@ -1,0 +1,6 @@
+﻿  Engine.cpp
+C:\Users\tonyz\OneDrive\Desktop\GBC ptojects\Semester 2\Production\GAME_PROTOTYPE\GAME1007_SDLTemplate\Engine.cpp(79,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\tonyz\OneDrive\Desktop\GBC ptojects\Semester 2\Production\GAME_PROTOTYPE\GAME1007_SDLTemplate\Engine.cpp(85,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\tonyz\OneDrive\Desktop\GBC ptojects\Semester 2\Production\GAME_PROTOTYPE\GAME1007_SDLTemplate\Engine.cpp(91,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\tonyz\OneDrive\Desktop\GBC ptojects\Semester 2\Production\GAME_PROTOTYPE\GAME1007_SDLTemplate\Engine.cpp(97,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  GAME1007_SDLTemplate.vcxproj -> C:\Users\tonyz\OneDrive\Desktop\GBC ptojects\Semester 2\Production\GAME_PROTOTYPE\Debug\GAME1007_SDLTemplate.exe
