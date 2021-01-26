@@ -4,6 +4,8 @@
 
 #include "SDL.h"
 #include <iostream>
+#include <vector>
+#include <SDL_mixer.h>
 #include "PlatformPlayer.h"
 #define FPS 60
 #define WIDTH 1024
@@ -26,6 +28,8 @@ private: // private properties.
 
 	}; //Position X and y, width and height 
 	PlatformPlayer m_player;
+	Mix_Music* m_pMusic;
+	vector<Mix_Chunk*> m_vSounds;
 
 private: // private method prototypes.
 	int Init(const char* title, int xPos, int yPos, int width, int height, int flags);

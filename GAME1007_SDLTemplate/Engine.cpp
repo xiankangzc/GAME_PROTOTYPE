@@ -17,6 +17,20 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 			{
 				// Initialize subsystems later...
 				cout << "Third pass." << endl;
+				if (Mix_Init(MIX_INIT_MP3) != 0) // Mixer init success.
+				{
+					Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048); // Good for most games.
+					Mix_AllocateChannels(16);
+					m_pMusic = Mix_LoadMUS("Aud/game.mp3"); // Load the music track.
+					// Load the chunks into the Mix_Chunk vector.
+					/*m_vSounds.reserve(3); // Optional but good practice.
+					m_vSounds.push_back(Mix_LoadWAV("Aud/enemy.wav"));
+					m_vSounds.push_back(Mix_LoadWAV("Aud/laser.wav"));
+					m_vSounds.push_back(Mix_LoadWAV("Aud/explode.wav"));
+					/* By the way, you should check to see if any of these loads are failing and
+					   you can use Mix_GetError() to print out the error message. Wavs can be finicky.*/
+				}
+				else return false;
 			}
 			else return false; // Renderer creation failed.
 		}
@@ -28,6 +42,8 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	m_player.Init(m_pRenderer);
 	// m_player = new PlatformPlayer(m_pRenderer);
 	cout << "Initialization successful!" << endl;
+	Mix_PlayMusic(m_pMusic, -1); // Play. -1 = looping.
+	Mix_VolumeMusic(16); // 0-MIX_MAX_VOLUME (128).
 	m_running = true;
 	return true;
 }
@@ -71,20 +87,20 @@ void Engine::CheckCollision()
 	{
 		if (SDL_HasIntersection(&m_player.GetRect(), &m_Platforms[i]))
 		{
-			if( (m_player.GetRect().y + m_player.GetRect().h) - (float)m_player.GetVelY() <= m_Platforms[i].y )
+			if ((m_player.GetRect().y + m_player.GetRect().h) - (float)m_player.GetVelY() <= m_Platforms[i].y)
 			{
 				//colliding with the top side of platforms.
 				m_player.SetGrounded(true);
 				m_player.StopY();
 				m_player.SetY(m_Platforms[i].y - m_player.GetRect().h);
 			}
-			else if (m_player.GetRect().y - (float)m_player.GetVelY() >= (m_Platforms[i].y + m_Platforms[i].h ))
+			else if (m_player.GetRect().y - (float)m_player.GetVelY() >= (m_Platforms[i].y + m_Platforms[i].h))
 			{
 				//colliding with the bottom side of platforms.
 				m_player.StopY();
 				m_player.SetY(m_Platforms[i].y + m_Platforms[i].h);
 			}
-			else if ((m_player.GetRect().x + m_player.GetRect().w) - (float)m_player.GetVelX() <= m_Platforms[i].x )
+			else if ((m_player.GetRect().x + m_player.GetRect().w) - (float)m_player.GetVelX() <= m_Platforms[i].x)
 			{
 				//colliding with the left side of platforms.
 				m_player.StopX();
@@ -129,7 +145,7 @@ void Engine::Render()
 	SDL_RenderPresent(m_pRenderer); // Flip buffers - send data to window.
 	// Any drawing here...
 
-	
+
 }
 
 void Engine::Sleep()
@@ -172,6 +188,12 @@ void Engine::Clean()
 	cout << "Cleaning engine..." << endl;
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
+	for (int i = 0; i < (int)m_vSounds.size(); i++)
+		Mix_FreeChunk(m_vSounds[i]);
+	m_vSounds.clear();
+	Mix_FreeMusic(m_pMusic);
+	Mix_CloseAudio();
+	Mix_Quit();
 	SDL_Quit();
 }
 
